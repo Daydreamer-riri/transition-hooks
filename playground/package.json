@@ -1,0 +1,15 @@
+{
+  "name": "playground",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "dependencies": {
+    "@types/react-dom": "18.2.0",
+    "react-dom": "18.2.0",
+    "transition-hooks": "workspace:*",
+    "vite": "^5.2.7"
+  }
+}
