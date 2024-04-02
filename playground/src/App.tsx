@@ -8,7 +8,6 @@ export function App() {
     <div>
       <Transition state={show}>
         {({ status, shouldMount }) => {
-          console.log('🚀 ~ App ~ shouldMount:', shouldMount)
           return shouldMount
             ? (
               <div
