@@ -1,0 +1,55 @@
+# Introduction
+
+Transition hooks is a headless UI utility for transition scene in React.
+It is simpler and easier to use than react-transition-group, And because it is state-driven, it can be used with react-dom and react-native
+
+## Status
+
+The heart of transition-hooks is the state machine.
+
+### Status graph
+
+![status graph](/status.png)
+
+Here is just a quick example to get you started:
+
+import { BasicUseTransition } from "../../components/BasicUseTransition"
+
+:::code-group
+<div data-title="Preview">
+  <BasicUseTransition />
+</div>
+
+```tsx [BasicUseTransition.tsx]
+import { useState } from 'react'
+import { useTransition } from 'transition-hooks'
+
+export function BasicUseTransition() {
+  const [show, setShow] = useState(false)
+  const { status, shouldMount } = useTransition(show)
+
+  return (
+    <div>
+      {shouldMount
+        ? (
+          <div
+            style={{
+              transition: 'opacity 0.3s',
+              opacity: (status === 'entering' || status === 'entered')
+                ? 1
+                : 0,
+            }}
+          >
+            Hello Word
+          </div>
+          )
+        : null}
+      <button onClick={() => setShow(!show)}>toggle</button>
+      <p>{ status }</p>
+    </div>
+  )
+}
+```
+
+:::
+

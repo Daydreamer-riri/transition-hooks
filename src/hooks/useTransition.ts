@@ -7,6 +7,7 @@ import {
   setAnimationFrameTimeout,
 } from '../helpers/setAnimationFrameTimeout'
 import { getTimeout } from '../helpers/getTimeout'
+import type { StatusState } from '../status'
 import { STATUS, getEndStatus, getState } from '../status'
 import type { Stage, TransitionOptions } from '../types'
 import useMemoizedFn from '../helpers/useMemorizeFn'
@@ -79,5 +80,5 @@ export function useTransition(state: boolean, transitionOptions?: TransitionOpti
   useEffect(() =>
     () => clearAnimationFrameTimeout(timer.current), [])
 
-  return statusState
+  return statusState as StatusState
 }
