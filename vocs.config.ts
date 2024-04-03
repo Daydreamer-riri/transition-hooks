@@ -24,6 +24,14 @@ export default defineConfig({
           text: 'useTransition',
           link: '/docs/useTransition',
         },
+        {
+          text: 'useSwitchTransition',
+          link: '/docs/useSwitchTransition',
+        },
+        {
+          text: 'useListTransition',
+          link: '/docs/useListTransition',
+        },
       ],
     },
   ],

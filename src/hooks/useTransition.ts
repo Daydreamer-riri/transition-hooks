@@ -7,9 +7,9 @@ import {
   setAnimationFrameTimeout,
 } from '../helpers/setAnimationFrameTimeout'
 import { getTimeout } from '../helpers/getTimeout'
-import type { StatusState } from '../status'
+import type { Stage, StatusState } from '../status'
 import { STATUS, getEndStatus, getState } from '../status'
-import type { Stage, TransitionOptions } from '../types'
+import type { TransitionOptions } from '../types'
 import useMemoizedFn from '../helpers/useMemorizeFn'
 import { useLatest } from '../helpers/useLatest'
 
@@ -17,13 +17,11 @@ export function useTransition(state: boolean, transitionOptions?: TransitionOpti
   const {
     timeout = 300,
     onStatusChange,
-    enter = true,
-    exit = true,
-    preEnter = true,
-    preExit = false,
+    from = true,
+    initialEntered = false,
   } = transitionOptions ?? {}
   const [statusState, setState] = useState(() =>
-    getState(state ? STATUS.entered : STATUS.exited),
+    getState(state ? (initialEntered ? STATUS.from : STATUS.entered) : STATUS.exited),
   )
 
   const latestStageRef = useLatest(statusState)
@@ -57,25 +55,31 @@ export function useTransition(state: boolean, transitionOptions?: TransitionOpti
             timer.current = setAnimationFrameTimeout(endTransition, exitTimeout)
           break
 
-        case STATUS.preEnter:
-        case STATUS.preExit:
+        case STATUS.from:
           timer.current = setAnimationFrameTimeout(() => transitState(status + 1))
           break
       }
     }
-    const enterStage = latestStageRef.current.isEnter
+    const enterStage = latestStageRef.current.notExit
 
     if (to) {
-      !enterStage && transitState(enter ? (preEnter ? STATUS.preEnter : STATUS.entering) : STATUS.entered)
+      !enterStage && transitState(from ? STATUS.from : STATUS.entering)
     }
     else {
       enterStage
-      && transitState(exit ? (preExit ? STATUS.preExit : STATUS.exiting) : STATUS.exited)
+      && transitState(STATUS.exiting)
     }
   })
 
-  if (state !== latestStageRef.current.isEnter)
+  if (state !== latestStageRef.current.notExit)
     doTransition(state)
+
+  useEffect(() => {
+    if (state === latestStageRef.current.notExit && statusState._s === STATUS.from) {
+      setState(getState(STATUS.entering))
+      timer.current = setAnimationFrameTimeout(endTransition, enterTimeout)
+    }
+  }, [])
 
   useEffect(() =>
     () => clearAnimationFrameTimeout(timer.current), [])

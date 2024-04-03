@@ -3,8 +3,8 @@ import { useTransition } from 'transition-hooks'
 import { Button } from '../Button'
 
 export function BasicUseTransition() {
-  const [show, setShow] = useState(false)
-  const { status, shouldMount } = useTransition(show)
+  const [show, setShow] = useState(true)
+  const { status, shouldMount } = useTransition(show, { initialEntered: true })
 
   return (
     <div>

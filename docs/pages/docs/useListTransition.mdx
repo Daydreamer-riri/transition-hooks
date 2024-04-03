@@ -1,0 +1,45 @@
+# useListTransition
+
+import { BasicUseListTransition } from "../../components/BasicUseListTransition"
+
+:::code-group
+
+<div data-title="Preview">
+  <BasicUseListTransition />
+</div>
+
+```tsx [Code]
+import { useState } from 'react'
+import { useSwitchTransition } from 'transition-hooks'
+import { Button } from '../Button'
+
+const texts = ['Edit', 'Save', 'Cancel']
+export function BasicUseSwitchTransition() {
+  const [count, setCount] = useState(0)
+  const text = texts[count % texts.length]
+  const { transition } = useSwitchTransition(text, { mode })
+
+  return (
+    <div style={{ position: 'relative', height: 36 }}>
+      {transition((text, { shouldEnter, status }) => (
+        <Button
+          onClick={() => setCount(count + 1)}
+          style={{
+            transition: 'all 0.3s',
+            opacity: shouldEnter ? 1 : 0,
+            transform: `translateY(${shouldEnter
+            ? 0
+            : status === 'preEnter' ? 30 : -30
+            }px)`,
+            position: 'absolute',
+          }}
+        >{text}
+        </Button>
+      ))}
+    </div>
+    // ... about select mode
+  )
+}
+```
+
+:::../../components/UseSwitchTransitionCount
