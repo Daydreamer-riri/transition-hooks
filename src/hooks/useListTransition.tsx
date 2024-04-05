@@ -4,12 +4,13 @@ import { setAnimationFrameTimeout } from '../helpers/setAnimationFrameTimeout'
 import { STATUS, type StatusState, getState } from '../status'
 import type { Timeout } from '../helpers/getTimeout'
 import { getTimeout } from '../helpers/getTimeout'
+import useMemoizedFn from '../helpers/useMemorizeFn'
 
 type RenderCallback<Item> = (item: Item, stage: StatusState) => React.ReactNode
 
 type ItemWithState<Item> = {
   item: Item
-  key: number
+  key: number | string
 } & StatusState
 
 interface ItemWithKey<Item> {
@@ -17,18 +18,21 @@ interface ItemWithKey<Item> {
   index: number
 }
 
-export function useListTransition<Item>(list: Array<Item>, options?: { timeout: Timeout, entered?: boolean, getKey?: (item: Item) => string | number }) {
-  const { timeout = 300, entered = true } = options || {}
+export function useListTransition<Item>(list: Array<Item>, options?: { timeout: Timeout, entered?: boolean, keyExtractor?: (item: Item) => string | number }) {
+  const { timeout = 300, entered = true, keyExtractor: _keyExtractor } = options || {}
   const keyRef = useRef(0)
+  const hasCustomKeyExtractor = !!_keyExtractor
+  const keyExtractor = useMemoizedFn(_keyExtractor || (() => keyRef.current))
   // change list to our list form with extra information.
-  const initialList: Array<ItemWithState<Item>> = list.map((item, _key) => ({
-    item,
-    key: keyRef.current++,
-    ...getState(STATUS.entered),
-  }))
   const { enterTimeout, exitTimeout } = getTimeout(timeout)
 
-  const [listState, setListState] = useState(initialList)
+  const [listState, setListState] = useState<Array<ItemWithState<Item>>>(
+    () => list.map((item, _key) => ({
+      item,
+      key: hasCustomKeyExtractor ? keyExtractor(item) : keyRef.current++,
+      ...getState(STATUS.entered),
+    })),
+  )
 
   useEffect(
     () => {
@@ -46,7 +50,7 @@ export function useListTransition<Item>(list: Array<Item>, options?: { timeout: 
             (prev, { item, index }, _i) =>
               insertArray(prev, index, {
                 item,
-                key: keyRef.current++,
+                key: hasCustomKeyExtractor ? keyExtractor(item) : keyRef.current++,
                 ...getState(STATUS.from),
               }),
             prevListState,
@@ -104,17 +108,32 @@ export function useListTransition<Item>(list: Array<Item>, options?: { timeout: 
           )
         }, exitTimeout)
       }
+
+      if (
+        hasCustomKeyExtractor
+        && list.length === listState.length
+        && list.some((item, index) => keyExtractor(item) !== listState[index].key)
+      ) {
+        setListState(
+          list.map(item => ({
+            item,
+            key: keyExtractor(item),
+            ...getState(STATUS.entered),
+          })),
+        )
+      }
     },
-    [list, listState, enterTimeout, exitTimeout, entered],
+    [list, listState, enterTimeout, exitTimeout, entered, keyExtractor, hasCustomKeyExtractor],
   )
 
-  function transition(renderCallback: RenderCallback<Item>) {
+  function transitionList(renderCallback: RenderCallback<Item>) {
     return listState.map(item => (
       <Fragment key={item.key}>
         {renderCallback(item.item, item)}
       </Fragment>
     ))
   }
+  const isResolved = listState.every(item => item.isResolved)
 
-  return transition
+  return { transitionList, isResolved }
 }

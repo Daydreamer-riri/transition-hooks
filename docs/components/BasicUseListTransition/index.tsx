@@ -1,21 +1,23 @@
 import { useRef, useState } from 'react'
 import { getSimpleStatus, useListTransition } from 'transition-hooks'
 import { Button } from '../Button'
+import { shuffle } from '../utils'
 
 const numbers = Array.from({ length: 5 }, (_, i) => i)
 export function BasicUseListTransition() {
   const [list, setList] = useState(numbers)
   const idRef = useRef(numbers.length)
-  const transition = useListTransition(list, { entered: false, timeout: 300 })
+  const { transitionList } = useListTransition(list, { entered: false, timeout: 300, keyExtractor: i => i })
 
   return (
     <div>
       <div style={{ display: 'flex', gap: 4 }}>
         <Button onClick={insert}>insert</Button>
         <Button onClick={remove}>remove</Button>
+        <Button onClick={() => setList(shuffle)}>shuffle</Button>
       </div>
       <ul>
-        {transition((item, { status }) => {
+        {transitionList((item, { status }) => {
           const simpleStatus = getSimpleStatus(status)
           return (
             <li
