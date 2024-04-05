@@ -41,13 +41,12 @@ export function useListTransition<Item>(list: Array<Item>, options?: { timeout: 
 
       // 1 add new items into list state
       if (newItemsWithIndex.length > 0) {
-        keyRef.current++
         setListState(prevListState =>
           newItemsWithIndex.reduce(
             (prev, { item, index }, _i) =>
               insertArray(prev, index, {
                 item,
-                key: keyRef.current,
+                key: keyRef.current++,
                 ...getState(STATUS.from),
               }),
             prevListState,
@@ -67,8 +66,8 @@ export function useListTransition<Item>(list: Array<Item>, options?: { timeout: 
                 setAnimationFrameTimeout(() => {
                   setListState(prev =>
                     prev.map(_item =>
-                      _item.key === item.key && _item.status === 'from'
-                        ? { ..._item, ...getState(STATUS.entering) }
+                      _item.key === item.key && _item.status === 'entering'
+                        ? { ..._item, ...getState(STATUS.entered) }
                         : item,
                     ),
                   )
