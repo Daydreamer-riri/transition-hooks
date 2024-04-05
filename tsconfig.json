@@ -4,7 +4,7 @@
     "jsx": "react-jsx",
     "lib": ["esnext", "dom"],
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "Bundler",
     "resolveJsonModule": true,
     "strict": true,
     "strictNullChecks": true,

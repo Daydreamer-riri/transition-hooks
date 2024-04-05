@@ -14,6 +14,7 @@ export function getState(status: STATUS) {
   return {
     _s: status,
     status: STATUS[status] as Stage,
+    simpleStatus: getSimpleStatus(STATUS[status] as Stage),
     /**
      * status !== 'exited',
      */

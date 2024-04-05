@@ -6,7 +6,7 @@ import type { Timeout } from '../helpers/getTimeout'
 import { getTimeout } from '../helpers/getTimeout'
 import useMemoizedFn from '../helpers/useMemorizeFn'
 
-type RenderCallback<Item> = (item: Item, stage: StatusState) => React.ReactNode
+type RenderCallback<Item> = (item: Item, stage: StatusState & { key: string | number }) => React.ReactNode
 
 type ItemWithState<Item> = {
   item: Item
@@ -18,8 +18,22 @@ interface ItemWithKey<Item> {
   index: number
 }
 
-export function useListTransition<Item>(list: Array<Item>, options?: { timeout: Timeout, entered?: boolean, keyExtractor?: (item: Item) => string | number }) {
-  const { timeout = 300, entered = true, keyExtractor: _keyExtractor } = options || {}
+interface ListTransitionOptions<Item> {
+  timeout: Timeout
+  entered?: boolean
+  keyExtractor?: (item: Item) => string | number
+  viewTransition?: (fn: () => void) => void
+}
+
+const noop = (fn: any) => fn()
+
+export function useListTransition<Item>(list: Array<Item>, options?: ListTransitionOptions<Item>) {
+  const {
+    timeout = 300,
+    entered = true,
+    keyExtractor: _keyExtractor,
+    viewTransition = noop,
+  } = options || {}
   const keyRef = useRef(0)
   const hasCustomKeyExtractor = !!_keyExtractor
   const keyExtractor = useMemoizedFn(_keyExtractor || (() => keyRef.current))
@@ -45,17 +59,19 @@ export function useListTransition<Item>(list: Array<Item>, options?: { timeout: 
 
       // 1 add new items into list state
       if (newItemsWithIndex.length > 0) {
-        setListState(prevListState =>
-          newItemsWithIndex.reduce(
-            (prev, { item, index }, _i) =>
-              insertArray(prev, index, {
-                item,
-                key: hasCustomKeyExtractor ? keyExtractor(item) : keyRef.current++,
-                ...getState(STATUS.from),
-              }),
-            prevListState,
-          ),
-        )
+        viewTransition(() => {
+          setListState(prevListState =>
+            newItemsWithIndex.reduce(
+              (prev, { item, index }, _i) =>
+                insertArray(prev, index, {
+                  item,
+                  key: hasCustomKeyExtractor ? keyExtractor(item) : keyRef.current++,
+                  ...getState(STATUS.from),
+                }),
+              prevListState,
+            ),
+          )
+        })
       }
 
       // 2 enter those new items immediatly
@@ -94,13 +110,15 @@ export function useListTransition<Item>(list: Array<Item>, options?: { timeout: 
       const subtractItems = subtractItemStates.map(item => item.item)
 
       if (newItemsWithIndex.length === 0 && subtractItemStates.length > 0) {
-        setListState(prev =>
-          prev.map(itemState =>
-            subtractItemStates.includes(itemState)
-              ? { ...itemState, ...getState(STATUS.exiting) }
-              : itemState,
-          ),
-        )
+        viewTransition(() => {
+          setListState(prev =>
+            prev.map(itemState =>
+              subtractItemStates.includes(itemState)
+                ? { ...itemState, ...getState(STATUS.exiting) }
+                : itemState,
+            ),
+          )
+        })
 
         setAnimationFrameTimeout(() => {
           setListState(prev =>
@@ -114,16 +132,18 @@ export function useListTransition<Item>(list: Array<Item>, options?: { timeout: 
         && list.length === listState.length
         && list.some((item, index) => keyExtractor(item) !== listState[index].key)
       ) {
-        setListState(
-          list.map(item => ({
-            item,
-            key: keyExtractor(item),
-            ...getState(STATUS.entered),
-          })),
-        )
+        viewTransition(() => {
+          setListState(
+            list.map(item => ({
+              item,
+              key: keyExtractor(item),
+              ...getState(STATUS.entered),
+            })),
+          )
+        })
       }
     },
-    [list, listState, enterTimeout, exitTimeout, entered, keyExtractor, hasCustomKeyExtractor],
+    [list, listState, enterTimeout, exitTimeout, entered, keyExtractor, hasCustomKeyExtractor, viewTransition],
   )
 
   function transitionList(renderCallback: RenderCallback<Item>) {

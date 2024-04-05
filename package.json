@@ -27,6 +27,22 @@
     ".": {
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
+    },
+    "./useTransition": {
+      "import": "./dist/hooks/useTransition.mjs",
+      "require": "./dist/hooks/useTransition.cjs"
+    },
+    "./useSwitchTransition": {
+      "import": "./dist/hooks/useSwitchTransition/index.mjs",
+      "require": "./dist/hooks/useSwitchTransition/index.cjs"
+    },
+    "./useListTransition": {
+      "import": "./dist/hooks/useListTransition.mjs",
+      "require": "./dist/hooks/useListTransition.cjs"
+    },
+    "./viewTransition": {
+      "import": "./dist/viewTransition.mjs",
+      "require": "./dist/viewTransition.cjs"
     }
   },
   "main": "./dist/index.cjs",
@@ -62,11 +78,13 @@
     "@ririd/eslint-config": "^1.1.0",
     "@types/node": "^18.15.11",
     "@types/react": "^18.2.73",
+    "@types/react-dom": "^18.2.24",
     "bumpp": "^9.4.0",
     "eslint": "^8.56.0",
     "esno": "^4.7.0",
     "lint-staged": "15.2.2",
     "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "rimraf": "5.0.5",
     "simple-git-hooks": "^2.11.1",
     "transition-hooks": "workspace:*",
