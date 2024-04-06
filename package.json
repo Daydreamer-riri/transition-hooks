@@ -78,7 +78,6 @@
     "lint": "eslint .",
     "prepublishOnly": "nr build",
     "release": "bumpp && npm publish",
-    "start": "esno src/index.ts",
     "typecheck": "tsc --noEmit",
     "docs:dev": "vocs dev",
     "docs:build": "vocs build",
