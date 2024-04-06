@@ -4,7 +4,7 @@ export default defineBuildConfig({
   entries: [
     'src/index.ts',
     'src/hooks/useTransition.ts',
-    'src/hooks/useSwitchTransition/index.tsx',
+    'src/hooks/useSwitchTransition',
     'src/hooks/useListTransition.tsx',
     'src/viewTransition.ts',
     'src/components/Transition.tsx',

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useSwitchTransition } from 'transition-hooks'
+import { useSwitchTransition } from 'transition-hooks/useSwitchTransition'
 import { Button } from '../Button'
 
 const modes = ['default', 'out-in', 'in-out']
