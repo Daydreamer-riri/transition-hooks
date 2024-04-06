@@ -75,31 +75,35 @@ export function useListTransition<Item>(list: Array<Item>, options?: ListTransit
       }
 
       // 2 enter those new items immediatly
+      const fromItems = listState.filter(item => item.status === 'from')
       if (
         newItemsWithIndex.length === 0
-        && listState.some(item => item.status === 'from')
+        && fromItems.length > 0
       ) {
         setAnimationFrameTimeout(() => {
           setListState(prev =>
-            prev.map(item => {
-              if (entered && item.status === 'from') {
-                setAnimationFrameTimeout(() => {
-                  setListState(prev =>
-                    prev.map(_item =>
-                      _item.key === item.key && _item.status === 'entering'
-                        ? { ..._item, ...getState(STATUS.entered) }
-                        : item,
-                    ),
-                  )
-                }, enterTimeout)
-              }
-              return ({
-                ...item,
-                ...(item.status === 'from' ? getState(STATUS.entering) : {}),
-              })
-            }),
+            prev.map(item => ({
+              ...item,
+              ...(item.status === 'from' ? getState(STATUS.entering) : {}),
+            })),
           )
         })
+      }
+
+      if (entered && fromItems.length > 0) {
+        setAnimationFrameTimeout(() => {
+          setListState(prev => {
+            return prev.map(item =>
+              (
+                fromItems.some(fromItem => fromItem.key === item.key)
+                && item.status === 'entering'
+              )
+                ? { ...item, ...getState(STATUS.entered) }
+                : item,
+            )
+          },
+          )
+        }, enterTimeout)
       }
 
       // 3 leave items from list state
