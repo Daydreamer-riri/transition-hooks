@@ -1,5 +1,4 @@
-import type { Timeout } from './helpers/getTimeout'
-import type { Stage, StatusState } from './status'
+import type { Stage } from './status'
 
 export interface TransitionOptions {
   /**
@@ -18,25 +17,4 @@ export interface TransitionOptions {
   initialEntered?: boolean
   entered?: boolean
   onStatusChange?: (status: Stage) => void
-}
-
-export type SwitchTransitionOptions = Omit<TransitionOptions, 'onStatusChange' | 'from' | 'enter' | 'exit' | 'initialEntered'> & { mode?: Mode }
-
-export type Mode = 'default' | 'out-in' | 'in-out'
-
-export type ListItem<S> = {
-  state: S
-  key: number
-} & {
-  prevState?: S
-  nextState?: S
-} & StatusState
-
-export interface ModeHookParam<S> {
-  state: S
-  timeout: Timeout
-  mode?: Mode
-  keyRef: React.MutableRefObject<number>
-  list: ListItem<S>[]
-  setList: React.Dispatch<React.SetStateAction<ListItem<S>[]>>
 }

@@ -1,6 +1,8 @@
 export { useTransition } from './hooks/useTransition'
 export { useSwitchTransition } from './hooks/useSwitchTransition/index'
+export type { Mode, SwitchRenderCallback, SwitchTransitionOptions } from './hooks/useSwitchTransition/index'
 export { useListTransition } from './hooks/useListTransition'
+export type { ListRenderCallback, ListTransitionOptions } from './hooks/useListTransition'
 export { Transition } from './components/Transition'
 export * from './types'
 export { getSimpleStatus } from './status'

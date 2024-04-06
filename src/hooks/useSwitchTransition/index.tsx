@@ -1,12 +1,33 @@
 import React, { Fragment, useRef, useState } from 'react'
-import type { ListItem, SwitchTransitionOptions } from '../../types'
+import type { TransitionOptions } from '../../types'
 import type { StatusState } from '../../status'
 import { STATUS, getState } from '../../status'
+import type { Timeout } from '../../helpers/getTimeout'
 import { useDefaultMode } from './useDefaultMode'
 import { useOutInMode } from './useOutInMode'
 import { useInOutMode } from './useInOutMode'
 
-type RenderCallback<S> = (state: S, statusState: StatusState & { prevState?: S, nextState?: S }) => React.ReactNode
+export type SwitchTransitionOptions = Omit<TransitionOptions, 'onStatusChange' | 'from' | 'enter' | 'exit' | 'initialEntered'> & { mode?: Mode }
+
+export type Mode = 'default' | 'out-in' | 'in-out'
+export interface ModeHookParam<S> {
+  state: S
+  timeout: Timeout
+  mode?: Mode
+  keyRef: React.MutableRefObject<number>
+  list: ListItem<S>[]
+  setList: React.Dispatch<React.SetStateAction<ListItem<S>[]>>
+}
+
+export type SwitchRenderCallback<S> = (state: S, statusState: StatusState & { prevState?: S, nextState?: S }) => React.ReactNode
+
+export type ListItem<S> = {
+  state: S
+  key: number
+} & {
+  prevState?: S
+  nextState?: S
+} & StatusState
 
 export function useSwitchTransition<S>(state: S, options?: SwitchTransitionOptions) {
   const {
@@ -33,7 +54,7 @@ export function useSwitchTransition<S>(state: S, options?: SwitchTransitionOptio
 
   const isResolved = list.every(item => item.isResolved)
 
-  function transition(renderCallback: RenderCallback<S>) {
+  function transition(renderCallback: SwitchRenderCallback<S>) {
     return list.map(item => (
       <Fragment key={item.key}>
         { renderCallback(item.state, item)}

@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
-import type { ListItem, ModeHookParam } from '../../types'
 import { STATUS, getState } from '../../status'
 import { nextTick } from '../../helpers/setAnimationFrameTimeout'
 import { getTimeout } from '../../helpers/getTimeout'
+import type { ListItem, ModeHookParam } from './index'
 
 export function useDefaultMode<S>({
   state,

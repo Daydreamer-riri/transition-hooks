@@ -3,7 +3,7 @@
   "type": "module",
   "version": "0.0.1",
   "packageManager": "pnpm@8.15.5",
-  "description": "☄️ An extremely light-weight react transition hook which is simpler and easier to use than react-transition-group",
+  "description": "Extremely light-weight react transition hooks which is simpler and easier to use than react-transition-group",
   "author": "Riri <Daydreamerriri@outlook.com>",
   "license": "MIT",
   "homepage": "https://github.com/Daydreamer-riri/transition-hooks#readme",
@@ -43,6 +43,18 @@
     "./viewTransition": {
       "import": "./dist/viewTransition.mjs",
       "require": "./dist/viewTransition.cjs"
+    },
+    "./Transition": {
+      "import": "./dist/components/Transition.mjs",
+      "require": "./dist/components/Transition.cjs"
+    },
+    "./SwitchTransition": {
+      "import": "./dist/components/SwitchTransition.mjs",
+      "require": "./dist/components/SwitchTransition.cjs"
+    },
+    "./ListTransition": {
+      "import": "./dist/components/ListTransition.mjs",
+      "require": "./dist/components/ListTransition.cjs"
     }
   },
   "main": "./dist/index.cjs",
@@ -52,7 +64,8 @@
     "*": {
       "*": [
         "./dist/*",
-        "./dist/index.d.mts"
+        "./dist/hooks/*",
+        "./dist/components/*"
       ]
     }
   },

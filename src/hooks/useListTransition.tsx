@@ -6,7 +6,7 @@ import type { Timeout } from '../helpers/getTimeout'
 import { getTimeout } from '../helpers/getTimeout'
 import useMemoizedFn from '../helpers/useMemorizeFn'
 
-type RenderCallback<Item> = (item: Item, stage: StatusState & { key: string | number }) => React.ReactNode
+export type ListRenderCallback<Item> = (item: Item, stage: StatusState & { key: string | number }) => React.ReactNode
 
 type ItemWithState<Item> = {
   item: Item
@@ -18,7 +18,7 @@ interface ItemWithKey<Item> {
   index: number
 }
 
-interface ListTransitionOptions<Item> {
+export interface ListTransitionOptions<Item> {
   timeout: Timeout
   entered?: boolean
   keyExtractor?: (item: Item) => string | number
@@ -150,7 +150,7 @@ export function useListTransition<Item>(list: Array<Item>, options?: ListTransit
     [list, listState, enterTimeout, exitTimeout, entered, keyExtractor, hasCustomKeyExtractor, viewTransition],
   )
 
-  function transitionList(renderCallback: RenderCallback<Item>) {
+  function transitionList(renderCallback: ListRenderCallback<Item>) {
     return listState.map(item => (
       <Fragment key={item.key}>
         {renderCallback(item.item, item)}

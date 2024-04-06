@@ -1,9 +1,9 @@
 import { useEffect, useRef } from 'react'
-import type { ModeHookParam } from '../../types'
 import { STATUS, getState } from '../../status'
 import type { Canceller } from '../../helpers/setAnimationFrameTimeout'
 import { clearAnimationFrameTimeout, setAnimationFrameTimeout } from '../../helpers/setAnimationFrameTimeout'
 import { getTimeout } from '../../helpers/getTimeout'
+import type { ModeHookParam } from './index'
 
 export function useInOutMode<S>({
   state,
