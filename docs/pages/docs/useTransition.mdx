@@ -20,14 +20,14 @@ export function BasicUseTransition() {
 
   return (
     <div>
-      {shouldMount  // [!code focus]
+      {shouldMount // [!code focus]
         ? (
           <div
             style={{
               transition: 'opacity 0.3s',
-              opacity: (status === 'entering' || status === 'entered')  // [!code focus]
+              opacity: (status === 'entering' || status === 'entered') // [!code focus]
                 ? 1 // [!code focus]
-                : 0,  // [!code focus]
+                : 0, // [!code focus]
             }}
           >
             Hello Word
@@ -56,39 +56,32 @@ function useTransition(
 ### `StatusState`
 
 ```ts
-type StatusState = {
-    status: "preEnter" | "entering" | "entered" | "preExit" | "exiting" | "exited" | "unmounted";
-    shouldMount: boolean;
-    isEnter: boolean;
-    isResolved: boolean;
+interface StatusState {
+  status: 'entered' | 'from' | 'entering' | 'exiting' | 'exited'
+  simpleStatus: 'from' | 'enter' | 'exit'
+  shouldMount: boolean
+  isEnter: boolean
+  notExit: boolean
+  isResolved: boolean
 }
 ```
 
 ### `TransitionOptions`
 
 ```ts
-export interface TransitionOptions {
+interface TransitionOptions {
+  from?: boolean
   /**
-   * Add a 'preEnter' state immediately before 'entering',
-   * which is necessary to change DOM elements from unmounted
-   * or display: none with CSS transition (not necessary for CSS animation).
-   * @default true
-   */
-  preEnter?: boolean
-  /**
-   * Add a 'preExit' state immediately before 'exiting'
-   * @default false
-   */
-  preExit?: boolean
-  /**
-   * Set timeout in ms for transitions;
-   * you can set a single value or different values for enter and exit transitions.
+   * Set timeout in ms for transitions; you can set a single value or different values for enter and exit transitions.
    * @default 300
    */
   timeout?: number | { enter: number, exit: number }
+  /**
+   * Beginning from 'from' state
+   */
+  initialEntered?: boolean
+  entered?: boolean
   onStatusChange?: (status: Stage) => void
-  enter?: boolean
-  exit?: boolean
 }
 ```
 import { useTransition } from "react"

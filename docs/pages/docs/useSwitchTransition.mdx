@@ -21,16 +21,16 @@ export function BasicUseSwitchTransition() {
 
   return (
     <div style={{ position: 'relative', height: 36 }}>
-      {transition((text, { shouldEnter, status }) => (
+      {transition((text, { isEnter, status }) => (
         <Button
           onClick={() => setCount(count + 1)}
           style={{
             transition: 'all 0.3s',
-            opacity: shouldEnter ? 1 : 0,
-            transform: `translateY(${shouldEnter
-            ? 0
-            : status === 'preEnter' ? 30 : -30
-            }px)`,
+            opacity: isEnter ? 1 : 0,
+            transform: `translateY(${isEnter
+              ? 0
+              : status === 'from' ? 30 : -30
+              }px)`,
             position: 'absolute',
           }}
         >{text}
@@ -42,4 +42,31 @@ export function BasicUseSwitchTransition() {
 }
 ```
 
-:::../../components/UseSwitchTransitionCount
+:::
+
+## API
+
+### `useSwitchTransition`
+
+```ts
+function useSwitchTransition<S>(state: S, options?: SwitchTransitionOptions): ({
+  transition: (renderCallback: SwitchRenderCallback<S>) => JSX.Element[]
+  isResolved: boolean
+})
+
+```
+
+### `SwitchTransitionOptions`
+
+```ts
+interface SwitchTransitionOptions {
+  timeout?: number | { enter: number, exit: number }
+  mode: 'default' | 'in-out' | 'out-in'
+}
+```
+
+### `SwitchRenderCallback`
+
+```ts
+export type SwitchRenderCallback<S> = (state: S, statusState: StatusState & { prevState?: S, nextState?: S }) => React.ReactNode
+```

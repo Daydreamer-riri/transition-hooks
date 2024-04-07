@@ -1,4 +1,17 @@
-// @ts-check
-import ririd from '@ririd/eslint-config'
+import ririd, { markdown } from '@ririd/eslint-config'
 
-export default ririd()
+export default ririd(
+  {
+    formatters: {
+      markdown: true,
+    },
+  },
+  markdown({ files: ['**/*.mdx'] }),
+  {
+    files: ['**/*.mdx/**/*.?([cm])[jt]s?(x)'],
+    rules: {
+      'style/no-multiple-empty-lines': 'off',
+      'unused-imports/no-unused-vars': 'off',
+    },
+  },
+)
