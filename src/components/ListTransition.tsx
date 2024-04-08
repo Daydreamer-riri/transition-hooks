@@ -1,14 +1,14 @@
 import type { ListRenderCallback, ListTransitionOptions } from '../hooks/useListTransition'
 import { useListTransition } from '../hooks/useListTransition'
 
-interface SwitchTransitionProps<T> {
+interface ListTransitionProps<T> {
   list: T[]
   transitionOptions?: ListTransitionOptions<T>
   children: ListRenderCallback<T>
 }
 
-export function SwitchTransition<T>(props: SwitchTransitionProps<T>) {
+export function ListTransition<T>(props: ListTransitionProps<T>) {
   const { transitionList } = useListTransition(props.list, props.transitionOptions)
 
-  return transitionList(props.children)
+  return <>{transitionList(props.children)}</>
 }

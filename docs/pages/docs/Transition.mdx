@@ -1,0 +1,32 @@
+# Transition
+
+## Example
+
+```tsx
+const [onOff, setOnOff] = useState(true)
+
+return (
+  <div>
+    <button onClick={() => setOnOff(!onOff)}>toggle</button>
+    <Transition state={onOff} timeout={300}>
+      {({ simpleStatus, shouldMount }) => shouldMount && (
+        <p style={{
+          transition: '.3s',
+          opacity: simpleStatus === 'enter' ? 1 : 0,
+        }}
+        >
+          I'm fading
+        </p>
+      )}
+    </Transition>
+  </div>
+)
+
+```
+
+## Type
+
+```ts
+function Transition(props: TransitionProps): React.ReactNode
+
+```

@@ -10,5 +10,5 @@ interface SwitchTransitionProps<T> {
 export function SwitchTransition<T>(props: SwitchTransitionProps<T>) {
   const { transition } = useSwitchTransition(props.state, props.transitionOptions)
 
-  return transition(props.children)
+  return <>{transition(props.children)}</>
 }

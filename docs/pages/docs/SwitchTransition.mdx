@@ -1,0 +1,30 @@
+# SwitchTransition
+
+## Example
+
+```tsx
+  <SwitchTransition state={count} timeout={300} mode="default">
+    {(state, { simpleStatus }) => (
+      <h1
+        style={{
+          transition: '.3s',
+          opacity: simpleStatus === 'enter' ? 1 : 0,
+          transform: {
+            from: 'translateX(-100%) scale(1.2)',
+            enter: 'translateX(0)',
+            leave: 'translateX(100%) scale(0)',
+          }[simpleStatus],
+        }}
+      >
+        {state} {simpleStatus} hello
+      </h1>
+    )}
+  </SwitchTransition>
+```
+
+## Type
+
+```ts
+function SwitchTransition<T>(props: SwitchTransitionProps<T>): JSX.Element
+
+```

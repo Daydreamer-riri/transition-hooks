@@ -68,5 +68,13 @@ interface SwitchTransitionOptions {
 ### `SwitchRenderCallback`
 
 ```ts
-export type SwitchRenderCallback<S> = (state: S, statusState: StatusState & { prevState?: S, nextState?: S }) => React.ReactNode
+export type SwitchRenderCallback<S> = (
+  state: S,
+  statusState: StatusState & { prevState?: S, nextState?: S }
+) => React.ReactNode
+
 ```
+
+### `StatusState`
+
+See [useTransition#StatusState](/docs/useTransition#statusstate)

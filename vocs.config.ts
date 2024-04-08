@@ -7,6 +7,15 @@ export default defineConfig({
     pattern: 'https://github.com/Daydreamer-riri/transition-hooks/edit/main/docs/pages/:path',
     text: 'Suggest changes to this page',
   },
+  socials: [
+    {
+      icon: 'github',
+      link: 'https://github.com/Daydreamer-riri/transition-hooks',
+    },
+  ],
+  topNav: [
+    { text: 'Guide & API', link: '/docs', match: '/docs' },
+  ],
   sidebar: [
     {
       text: 'Getting Started',
@@ -31,6 +40,23 @@ export default defineConfig({
         {
           text: 'useListTransition',
           link: '/docs/useListTransition',
+        },
+      ],
+    },
+    {
+      text: 'Components',
+      items: [
+        {
+          text: 'Transition',
+          link: '/docs/Transition',
+        },
+        {
+          text: 'SwitchTransition',
+          link: '/docs/SwitchTransition',
+        },
+        {
+          text: 'ListTransition',
+          link: '/docs/ListTransition',
         },
       ],
     },

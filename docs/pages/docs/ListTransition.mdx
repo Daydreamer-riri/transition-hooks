@@ -1,0 +1,32 @@
+# ListTransition
+
+## Example
+
+```tsx
+<ul>
+  <ListTransition list={list}>
+    {(item, { simpleStatus }) => (
+      <li
+        style={{
+          transition: '.3s',
+          opacity: simpleStatus === 'enter' ? 1 : 0,
+          transform: {
+            from: 'translateX(-100%) scale(1.2)',
+            enter: 'translateX(0)',
+            leave: 'translateX(100%) scale(0)',
+          }[simpleStatus],
+        }}
+      >
+        {item}
+      </li>
+    )}
+  </ListTransition>
+</ul>
+```
+
+## Type
+
+```ts
+function ListTransition<T>(props: ListTransitionProps<T>): JSX.Element
+
+```

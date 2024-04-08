@@ -81,7 +81,7 @@
     "release": "bumpp && npm publish",
     "typecheck": "tsc --noEmit",
     "docs:dev": "vocs dev",
-    "docs:build": "vocs build",
+    "docs:build": "npm run build && vocs build",
     "docs:preview": "vocs preview"
   },
   "peerDependencies": {

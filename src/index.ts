@@ -4,5 +4,7 @@ export type { Mode, SwitchRenderCallback, SwitchTransitionOptions } from './hook
 export { useListTransition } from './hooks/useListTransition'
 export type { ListRenderCallback, ListTransitionOptions } from './hooks/useListTransition'
 export { Transition } from './components/Transition'
+export { SwitchTransition } from './components/SwitchTransition'
+export { ListTransition } from './components/ListTransition'
 export * from './types'
 export { getSimpleStatus } from './status'

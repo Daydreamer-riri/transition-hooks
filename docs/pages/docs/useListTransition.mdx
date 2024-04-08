@@ -69,3 +69,39 @@ export function BasicUseListTransition() {
 :::
 
 If you want to use `view transition`, the keyExtractor argument must be set.
+
+## API
+
+### `useListTransition`
+
+```ts
+function useListTransition<Item>(list: Array<Item>, options?: ListTransitionOptions<Item>): {
+  transitionList: (renderCallback: ListRenderCallback<Item>) => JSX.Element[]
+  isResolved: boolean
+}
+```
+
+### `ListTransitionOptions`
+
+```ts
+interface ListTransitionOptions<Item> {
+  timeout: Timeout
+  entered?: boolean
+  keyExtractor?: (item: Item) => string | number
+  viewTransition?: (fn: () => void) => void
+}
+```
+
+### `ListRenderCallback`
+
+```ts
+export type ListRenderCallback<Item> = (
+  item: Item,
+  stage: StatusState & { key: string | number }
+) => React.ReactNode
+
+```
+
+### `StatusState`
+
+See [useTransition#StatusState](/docs/useTransition#statusstate)

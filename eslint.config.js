@@ -12,6 +12,8 @@ export default ririd(
     rules: {
       'style/no-multiple-empty-lines': 'off',
       'unused-imports/no-unused-vars': 'off',
+      'react-hooks/rules-of-hooks': 'off',
+      'react/no-unescaped-entities': 'off',
     },
   },
 )
