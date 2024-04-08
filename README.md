@@ -120,7 +120,7 @@ See the documentation(https://transition-hooks.netlify.app/) for more usage.
 
 ## Credits
 
-All credit goes to [iamyoki](https://github.com/iamyoki) for initiating [transition-hook](https://github.com/iamyoki/transition-hook). Since the project is not currently active and does not support react18, I will continue to maintain the project.
+All credit goes to [iamyoki](https://github.com/iamyoki) for initiating [transition-hook](https://github.com/iamyoki/transition-hook), but the project is not currently active and does not support react18.
 
 ## License
 
