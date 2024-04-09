@@ -118,7 +118,7 @@ interface StatusState {
 }
 ```
 
-See the documentation(https://transition-hooks.netlify.app/) for more usage.
+See the [documentation](https://transition-hooks.netlify.app/) for more usage.
 
 ## Credits
 
