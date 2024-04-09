@@ -16,11 +16,13 @@ Extremely light-weight react transition hooks which is simpler and easier to use
 
 ## Documentation
 
-See [Documentation](https://transition-hooks.netlify.app/).
+### See [Documentation](https://transition-hooks.netlify.app/).
 
 Awesome documentation station is under construction!
 
 ## Usage
+
+> This is only a brief introduction to use, more usage please visit the [documentation](https://transition-hooks.netlify.app/).
 
 ### useTransition
 
@@ -120,7 +122,7 @@ See the documentation(https://transition-hooks.netlify.app/) for more usage.
 
 ## Credits
 
-All credit goes to [iamyoki](https://github.com/iamyoki) for initiating [transition-hook](https://github.com/iamyoki/transition-hook), but the project is not currently active and does not support react18.
+All credit goes to [iamyoki](https://github.com/iamyoki) for initiating [transition-hook](https://github.com/iamyoki/transition-hook)(the project is not currently active and does not support react18).
 
 ## License
 
