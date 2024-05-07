@@ -27,7 +27,12 @@ export function clearAnimationFrameTimeout(canceller: Canceller) {
     cancelAnimationFrame(canceller.id)
 }
 
+const isBrowser = typeof document !== 'undefined'
+
 export function nextTick(callback: () => unknown) {
+  if (!isBrowser)
+    return setAnimationFrameTimeout(callback, 0)
+
   return setTimeout(() => {
     // Reading document.body.offsetTop can force browser to repaint before transition to the next state
     Number.isNaN(document.body.offsetTop) || callback()
