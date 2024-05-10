@@ -3,20 +3,23 @@ import type { TransitionOptions } from '../../types'
 import type { StatusState } from '../../status'
 import { STATUS, getState } from '../../status'
 import type { Timeout } from '../../helpers/getTimeout'
+import { useStateChange } from '../../helpers/useStateChange'
 import { useDefaultMode } from './useDefaultMode'
 import { useOutInMode } from './useOutInMode'
 import { useInOutMode } from './useInOutMode'
 
-export type SwitchTransitionOptions = Omit<TransitionOptions, 'onStatusChange' | 'from' | 'enter' | 'exit' | 'initialEntered'> & { mode?: Mode }
+export type SwitchTransitionOptions = Omit<TransitionOptions, 'onStatusChange' | 'enter' | 'exit' | 'initialEntered'> & { mode?: Mode }
 
 export type Mode = 'default' | 'out-in' | 'in-out'
 export interface ModeHookParam<S> {
   state: S
+  hasChanged: boolean
   timeout: Timeout
   mode?: Mode
   keyRef: React.MutableRefObject<number>
   list: ListItem<S>[]
   setList: React.Dispatch<React.SetStateAction<ListItem<S>[]>>
+  from: boolean
 }
 
 export type SwitchRenderCallback<S> = (state: S, statusState: StatusState & { prevState?: S, nextState?: S }) => React.ReactNode
@@ -33,6 +36,7 @@ export function useSwitchTransition<S>(state: S, options?: SwitchTransitionOptio
   const {
     timeout = 300,
     mode = 'default',
+    from = true,
   } = options || {}
 
   const keyRef = useRef(0)
@@ -42,15 +46,16 @@ export function useSwitchTransition<S>(state: S, options?: SwitchTransitionOptio
     ...getState(STATUS.entered),
   }
   const [list, setList] = useState([firstDefaultItem])
+  const hasChanged = useStateChange(state)
 
   // for default mode only
-  useDefaultMode({ state, timeout, keyRef, mode, list, setList })
+  useDefaultMode({ state, timeout, keyRef, mode, list, setList, hasChanged, from })
 
   // for out-in mode only
-  useOutInMode({ state, timeout, keyRef, mode, list, setList })
+  useOutInMode({ state, timeout, keyRef, mode, list, setList, hasChanged, from })
 
   // for in-out mode only
-  useInOutMode({ state, timeout, keyRef, mode, list, setList })
+  useInOutMode({ state, timeout, keyRef, mode, list, setList, hasChanged, from })
 
   const isResolved = list.every(item => item.isResolved)
 
@@ -62,5 +67,5 @@ export function useSwitchTransition<S>(state: S, options?: SwitchTransitionOptio
     ))
   }
 
-  return { transition, isResolved }
+  return { transition, isResolved, list }
 }
