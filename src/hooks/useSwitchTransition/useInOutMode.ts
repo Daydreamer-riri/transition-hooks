@@ -72,11 +72,11 @@ export function useInOutMode<S>({
         setList(prev => prev.filter(item => item.key !== secondLastItem.key))
       }, exitTimeout)
     }
-
-    return () => {
-      clearAnimationFrameTimeout(timerRef.current)
-      clearAnimationFrameTimeout(timerRef2.current)
-      clearAnimationFrameTimeout(timerRef3.current)
-    }
   }, [keyRef, list, mode, setList, state, enterTimeout, exitTimeout])
+
+  useEffect(() => () => {
+    clearAnimationFrameTimeout(timerRef.current)
+    clearAnimationFrameTimeout(timerRef2.current)
+    clearAnimationFrameTimeout(timerRef3.current)
+  }, [])
 }

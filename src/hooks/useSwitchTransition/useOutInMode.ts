@@ -50,9 +50,9 @@ export function useOutInMode<S>({
         setList(prev => [{ ...prev[0], ...getState(STATUS.entered) }])
       }, enterTimeout)
     }
-
-    return () => {
-      clearAnimationFrameTimeout(timerRef.current)
-    }
   }, [keyRef, list, mode, setList, state, enterTimeout, exitTimeout])
+
+  useEffect(() => () => {
+    clearAnimationFrameTimeout(timerRef.current)
+  }, [])
 }
