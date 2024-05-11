@@ -1,12 +1,8 @@
 import { useState } from 'react'
 import { STATUS, getState } from '../../status'
-import { nextTick } from '../../helpers/setAnimationFrameTimeout'
+import { immediateExecution, nextTick } from '../../helpers/setAnimationFrameTimeout'
 import { getTimeout } from '../../helpers/getTimeout'
 import type { ListItem, ModeHookParam } from './index'
-
-function nowFn(callback: () => unknown) {
-  return callback()
-}
 
 export function useDefaultMode<S>({
   state,
@@ -17,11 +13,12 @@ export function useDefaultMode<S>({
   setList,
   hasChanged,
   from,
+  entered,
 }: ModeHookParam<S>) {
   const { enterTimeout, exitTimeout } = getTimeout(timeout)
   const timeoutIdMap = useState(() => new Map<number, number>())[0]
 
-  const nextTickOrNow = from ? nextTick : nowFn
+  const nextTickOrNow = from ? nextTick : immediateExecution
   // skip unmatched mode 🚫
   if (mode !== undefined && mode !== 'default')
     return
@@ -47,6 +44,8 @@ export function useDefaultMode<S>({
     setList(prev =>
       prev.map(item => (isCurItem(item) ? { ...item, ...getState(STATUS.entering) } : item)),
     )
+    if (!entered)
+      return
     const id = window.setTimeout(() => {
       setList(prev =>
         prev.map(item => (isCurItem(item) ? { ...item, ...getState(STATUS.entered) } : item)),
@@ -69,7 +68,7 @@ export function useDefaultMode<S>({
         timeoutIdMap.delete(item.key)
       }
 
-      return { ...item, nextState: state, ...getState(STATUS.exiting) }
+      return { ...item, nextState: state, ...getState(STATUS.exiting), prevState: undefined }
     },
     ),
   )

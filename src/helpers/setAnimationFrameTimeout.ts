@@ -38,3 +38,7 @@ export function nextTick(callback: () => unknown) {
     Number.isNaN(document.body.offsetTop) || callback()
   }, 0)
 }
+
+export function immediateExecution(callback: () => unknown) {
+  callback()
+}

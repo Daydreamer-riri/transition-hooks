@@ -45,6 +45,9 @@ export function BasicUseSwitchTransition() {
           </label>
         ))}
       </div>
+      <div>
+        <Button onClick={() => setCount(count + 1)}>click</Button>
+      </div>
     </div>
   )
 }

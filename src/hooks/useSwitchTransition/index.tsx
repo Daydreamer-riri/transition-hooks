@@ -20,6 +20,7 @@ export interface ModeHookParam<S> {
   list: ListItem<S>[]
   setList: React.Dispatch<React.SetStateAction<ListItem<S>[]>>
   from: boolean
+  entered: boolean
 }
 
 export type SwitchRenderCallback<S> = (state: S, statusState: StatusState & { prevState?: S, nextState?: S }) => React.ReactNode
@@ -37,6 +38,7 @@ export function useSwitchTransition<S>(state: S, options?: SwitchTransitionOptio
     timeout = 300,
     mode = 'default',
     from = true,
+    entered = true,
   } = options || {}
 
   const keyRef = useRef(0)
@@ -49,13 +51,13 @@ export function useSwitchTransition<S>(state: S, options?: SwitchTransitionOptio
   const hasChanged = useStateChange(state)
 
   // for default mode only
-  useDefaultMode({ state, timeout, keyRef, mode, list, setList, hasChanged, from })
+  useDefaultMode({ state, timeout, keyRef, mode, list, setList, hasChanged, from, entered })
 
   // for out-in mode only
-  useOutInMode({ state, timeout, keyRef, mode, list, setList, hasChanged, from })
+  useOutInMode({ state, timeout, keyRef, mode, list, setList, hasChanged, from, entered })
 
   // for in-out mode only
-  useInOutMode({ state, timeout, keyRef, mode, list, setList, hasChanged, from })
+  useInOutMode({ state, timeout, keyRef, mode, list, setList, hasChanged, from, entered })
 
   const isResolved = list.every(item => item.isResolved)
 

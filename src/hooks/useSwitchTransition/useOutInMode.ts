@@ -1,7 +1,7 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { STATUS, getState } from '../../status'
 import type { Canceller } from '../../helpers/setAnimationFrameTimeout'
-import { clearAnimationFrameTimeout, setAnimationFrameTimeout } from '../../helpers/setAnimationFrameTimeout'
+import { clearAnimationFrameTimeout, immediateExecution, nextTick, setAnimationFrameTimeout } from '../../helpers/setAnimationFrameTimeout'
 import { getTimeout } from '../../helpers/getTimeout'
 import type { ModeHookParam } from './index'
 
@@ -12,47 +12,56 @@ export function useOutInMode<S>({
   keyRef,
   list,
   setList,
+  hasChanged,
+  from,
+  entered,
 }: ModeHookParam<S>) {
   const { enterTimeout, exitTimeout } = getTimeout(timeout)
-  const timerRef = useRef<Canceller>({})
+  const startEnterTimerRef = useRef<Canceller>({})
+  const endEnterTimerRef = useRef<Canceller>({})
+  const allTimers = useState(() => new Set<Canceller>())[0]
+  const nextTickOrNow = from ? nextTick : immediateExecution
 
-  useEffect(() => {
-    // skip unmatched mode 🚫
-    if (mode !== 'out-in')
-      return
-
-    const [lastItem] = list.slice(-1)
-
-    // if state has changed && stage is enter (trigger prev last item to leave)
-    if (lastItem.state !== state && lastItem.isEnter) {
-      // 1 leave prev last item
-      setList([{ ...lastItem, ...getState(STATUS.exiting), nextState: state }])
-    }
-
-    // if state has changed && stage is leave (add new item after prev last item leave ani ends)
-    if (lastItem.state !== state && !lastItem.notExit) {
-      // 2 add new item after prev last item leave animation ends
-      clearAnimationFrameTimeout(timerRef.current)
-      timerRef.current = setAnimationFrameTimeout(() => {
-        keyRef.current++
-        setList([{ state, key: keyRef.current, ...getState(STATUS.from), prevState: lastItem.state }])
-      }, exitTimeout)
-    }
-
-    // if state hasn't change && stage is from
-    if (lastItem.state === state && lastItem.status === 'from') {
-      // 3 change that new item's stage to 'enter' immediately
-      setAnimationFrameTimeout(() => {
-        setList(prev => [{ ...prev[0], ...getState(STATUS.entering) }])
-      })
-      clearAnimationFrameTimeout(timerRef.current)
-      timerRef.current = setAnimationFrameTimeout(() => {
-        setList(prev => [{ ...prev[0], ...getState(STATUS.entered) }])
-      }, enterTimeout)
-    }
-  }, [keyRef, list, mode, setList, state, enterTimeout, exitTimeout])
+  const lastStateRef = useRef<S>()
 
   useEffect(() => () => {
-    clearAnimationFrameTimeout(timerRef.current)
+    clearAnimationFrameTimeout(startEnterTimerRef.current)
   }, [])
+
+  if (mode !== 'out-in')
+    return
+
+  if (!hasChanged)
+    return
+
+  const [lastItem] = list.slice(-1)
+  if (lastItem !== undefined)
+    lastStateRef.current = lastItem.state
+
+  if (lastItem?.state !== state) {
+    if (lastItem?.notExit) {
+      setList(list => list.map(item => item.key === lastItem.key ? { ...lastItem, ...getState(STATUS.exiting), nextState: state, prevState: undefined } : item))
+      const endExitTimer = setAnimationFrameTimeout(() => {
+        setList(list => list.filter(item => item.key !== lastItem.key))
+        allTimers.delete(endExitTimer)
+      }, exitTimeout)
+      allTimers.add(endExitTimer)
+    }
+
+    keyRef.current++
+    const curKey = keyRef.current
+    clearAnimationFrameTimeout(startEnterTimerRef.current)
+    clearAnimationFrameTimeout(endEnterTimerRef.current)
+    startEnterTimerRef.current = setAnimationFrameTimeout(() => {
+      setList(list => list.concat({ state, key: keyRef.current, ...getState(STATUS.from), prevState: lastStateRef.current }))
+      nextTickOrNow(() => {
+        setList(list => list.map(item => item.key === curKey ? { ...item, ...getState(STATUS.entering) } : item))
+      })
+      if (!entered)
+        return
+      endEnterTimerRef.current = setAnimationFrameTimeout(() => {
+        setList(list => list.map(item => item.key === curKey ? { ...item, ...getState(STATUS.entered) } : item))
+      }, enterTimeout)
+    }, exitTimeout)
+  }
 }

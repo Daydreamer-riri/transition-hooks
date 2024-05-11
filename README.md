@@ -27,6 +27,9 @@ Awesome documentation station is under construction!
 ### useTransition
 
 ```tsx
+import { useState } from 'react'
+import { useTransition } from 'transition-hooks'
+
 function Demo() {
   const [show, setShow] = useState(false)
   const { status, shouldMount } = useTransition(show)
@@ -51,6 +54,9 @@ function Demo() {
 ### useSwitchTransition
 
 ```tsx
+import { useState } from 'react'
+import { useSwitchTransition } from 'transition-hooks'
+
 function Demo() {
   const [count, setCount] = useState(0)
   const { transition } = useSwitchTransition(count, { mode: 'default' })
@@ -79,8 +85,11 @@ function Demo() {
 ### useListTransition
 
 ```tsx
+import { useState } from 'react'
+import { useListTransition } from 'transition-hooks'
+
 function Demo() {
-  const [list, setList] = useState(numbers)
+  const [list, setList] = useState([0, 1, 2])
   const { transitionList } = useListTransition(list)
 
   return (
