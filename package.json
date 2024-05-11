@@ -1,7 +1,7 @@
 {
   "name": "transition-hooks",
   "type": "module",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "packageManager": "pnpm@8.15.5",
   "description": "Extremely light-weight react transition hooks which is simpler and easier to use than react-transition-group",
   "author": "Riri <Daydreamerriri@outlook.com>",
