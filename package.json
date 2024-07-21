@@ -2,7 +2,7 @@
   "name": "transition-hooks",
   "type": "module",
   "version": "0.3.0",
-  "packageManager": "pnpm@8.15.5",
+  "packageManager": "pnpm@9.5.0",
   "description": "Extremely light-weight react transition hooks which is simpler and easier to use than react-transition-group",
   "author": "Riri <Daydreamerriri@outlook.com>",
   "license": "MIT",
@@ -88,12 +88,12 @@
     "react": "^16.8.0  || ^17.0.0 || ^18.0.0"
   },
   "devDependencies": {
-    "@ririd/eslint-config": "^1.2.0",
+    "@ririd/eslint-config": "^1.3.3",
     "@types/node": "^18.15.11",
     "@types/react": "^18.2.73",
     "@types/react-dom": "^18.2.24",
     "bumpp": "^9.4.0",
-    "eslint": "^8.57.0",
+    "eslint": "^9.7.0",
     "esno": "^4.7.0",
     "lint-staged": "15.2.2",
     "react": "^18.2.0",
@@ -101,7 +101,7 @@
     "rimraf": "5.0.5",
     "simple-git-hooks": "^2.11.1",
     "transition-hooks": "workspace:*",
-    "typescript": "^5.4.3",
+    "typescript": "^5.5.3",
     "unbuild": "^2.0.0",
     "vite": "^5.2.7",
     "vocs": "1.0.0-alpha.45"
