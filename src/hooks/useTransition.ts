@@ -38,7 +38,9 @@ export function useTransition(state: boolean, transitionOptions?: TransitionOpti
 
   const endTransition = useMemoizedFn(() => {
     const status = getEndStatus(latestStageRef.current._s)
-    status && updateState(status)
+    if (status) {
+      updateState(status)
+    }
   })
 
   const doTransition = useMemoizedFn((to: boolean) => {
@@ -63,11 +65,12 @@ export function useTransition(state: boolean, transitionOptions?: TransitionOpti
     const enterStage = latestStageRef.current.notExit
 
     if (to) {
-      !enterStage && transitState(from ? STATUS.from : STATUS.entering)
+      const _ = !enterStage
+        && transitState(from ? STATUS.from : STATUS.entering)
     }
     else {
-      enterStage
-      && transitState(STATUS.exiting)
+      const _ = enterStage
+        && transitState(STATUS.exiting)
     }
   })
 
@@ -79,6 +82,7 @@ export function useTransition(state: boolean, transitionOptions?: TransitionOpti
       setState(getState(STATUS.entering))
       timer.current = setAnimationFrameTimeout(endTransition, enterTimeout)
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() =>

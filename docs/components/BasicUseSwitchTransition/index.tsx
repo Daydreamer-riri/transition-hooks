@@ -25,7 +25,8 @@ export function BasicUseSwitchTransition() {
               }px)`,
               position: 'absolute',
             }}
-          >{text}
+          >
+            {text}
           </Button>
         ))}
       </div>

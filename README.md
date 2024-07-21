@@ -36,16 +36,16 @@ function Demo() {
 
   return shouldMount
     ? (
-      <div
-        style={{
-          transition: 'opacity 0.3s',
-          opacity: (status === 'entering' || status === 'entered')
-            ? 1
-            : 0,
-        }}
-      >
-        Hello Word
-      </div>
+        <div
+          style={{
+            transition: 'opacity 0.3s',
+            opacity: (status === 'entering' || status === 'entered')
+              ? 1
+              : 0,
+          }}
+        >
+          Hello Word
+        </div>
       )
     : null
 }
@@ -74,7 +74,8 @@ function Demo() {
             exit: 'translateX(100%)',
           }[simpleStatus]
         }}
-        >{count}
+        >
+          {count}
         </p>
       ))}
     </div>

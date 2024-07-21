@@ -8,7 +8,8 @@ interface SwitchTransitionProps<T> {
 }
 
 export function SwitchTransition<T>(props: SwitchTransitionProps<T>) {
-  const { transition } = useSwitchTransition(props.state, props.transitionOptions)
+  const { state, transitionOptions, children } = props
+  const { transition } = useSwitchTransition(state, transitionOptions)
 
-  return <>{transition(props.children)}</>
+  return <>{transition(children)}</>
 }

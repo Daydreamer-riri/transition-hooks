@@ -8,7 +8,8 @@ interface ListTransitionProps<T> {
 }
 
 export function ListTransition<T>(props: ListTransitionProps<T>) {
-  const { transitionList } = useListTransition(props.list, props.transitionOptions)
+  const { list, transitionOptions, children } = props
+  const { transitionList } = useListTransition(list, transitionOptions)
 
-  return <>{transitionList(props.children)}</>
+  return <>{transitionList(children)}</>
 }

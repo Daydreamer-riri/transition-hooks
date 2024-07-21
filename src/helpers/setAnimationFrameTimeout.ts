@@ -35,7 +35,7 @@ export function nextTick(callback: () => unknown) {
 
   return setTimeout(() => {
     // Reading document.body.offsetTop can force browser to repaint before transition to the next state
-    Number.isNaN(document.body.offsetTop) || callback()
+    return Number.isNaN(document.body.offsetTop) || callback()
   }, 0)
 }
 

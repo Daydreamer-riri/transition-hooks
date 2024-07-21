@@ -10,14 +10,14 @@ export function BasicUseTransition() {
     <div>
       {shouldMount
         ? (
-          <div
-            style={{
-              transition: 'opacity 0.3s',
-              opacity: status === 'entering' || status === 'entered' ? 1 : 0,
-            }}
-          >
-            Hello Word
-          </div>
+            <div
+              style={{
+                transition: 'opacity 0.3s',
+                opacity: status === 'entering' || status === 'entered' ? 1 : 0,
+              }}
+            >
+              Hello Word
+            </div>
           )
         : null}
       <Button onClick={() => setShow(!show)}>toggle</Button>

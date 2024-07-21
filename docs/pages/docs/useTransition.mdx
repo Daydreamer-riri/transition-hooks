@@ -22,16 +22,16 @@ export function BasicUseTransition() {
     <div>
       {shouldMount // [!code focus]
         ? (
-          <div
-            style={{
-              transition: 'opacity 0.3s',
-              opacity: (status === 'entering' || status === 'entered') // [!code focus]
-                ? 1 // [!code focus]
-                : 0, // [!code focus]
-            }}
-          >
-            Hello Word
-          </div>
+            <div
+              style={{
+                transition: 'opacity 0.3s',
+                opacity: (status === 'entering' || status === 'entered') // [!code focus]
+                  ? 1 // [!code focus]
+                  : 0, // [!code focus]
+              }}
+            >
+              Hello Word
+            </div>
           )
         : null}
       <button onClick={() => setShow(!show)}>toggle</button>
