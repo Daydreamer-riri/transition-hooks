@@ -50,12 +50,42 @@ export function useListTransition<Item>(list: Array<Item>, options?: ListTransit
 
   useEffect(
     () => {
+      // const hasChanged = listState.length !== list.length
+      //   || (hasCustomKeyExtractor && list.some((item, index) => keyExtractor(item) !== listState[index].key))
+      // console.log('🚀 ~ hasChanged:', hasChanged)
+      // if (!hasChanged)
+      //   return
+
       const newItemsWithIndex: Array<ItemWithKey<Item>> = []
+      const updatedItemsWithIndex: Array<ItemWithKey<Item>> = []
 
       list.forEach((item, index) => {
-        if (listState.every(itemState => itemState.item !== item))
-          newItemsWithIndex.push({ item, index })
+        if (listState.every(itemState => itemState.item !== item)) {
+          if (hasCustomKeyExtractor && listState.some(itemState => keyExtractor(item) === itemState.key))
+            updatedItemsWithIndex.push({ item, index })
+          else
+            newItemsWithIndex.push({ item, index })
+        }
       })
+
+      if (updatedItemsWithIndex.length > 0) {
+        viewTransition(() => {
+          setListState(prevListState => {
+            const newListState = [...prevListState]
+            updatedItemsWithIndex.forEach(({ item }) => {
+              const targetIndex = newListState.findIndex(itemState => itemState.key === keyExtractor(item))
+              if (targetIndex > -1) {
+                const originItem = newListState[targetIndex]
+                newListState[targetIndex] = {
+                  ...originItem,
+                  item,
+                }
+              }
+            })
+            return newListState
+          })
+        })
+      }
 
       // 1 add new items into list state
       if (newItemsWithIndex.length > 0) {
@@ -138,11 +168,15 @@ export function useListTransition<Item>(list: Array<Item>, options?: ListTransit
       ) {
         viewTransition(() => {
           setListState(
-            list.map(item => ({
-              item,
-              key: keyExtractor(item),
-              ...getState(STATUS.entered),
-            })),
+            list.map(item => {
+              const key = keyExtractor(item)
+              const originItem = listState.find(itemState => itemState.key === key)
+              return {
+                ...(originItem || getState(STATUS.entered)),
+                item,
+                key,
+              }
+            }),
           )
         })
       }
