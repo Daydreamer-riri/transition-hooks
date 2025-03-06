@@ -16,9 +16,12 @@ Extremely light-weight react transition hooks which is simpler and easier to use
 
 ## Documentation
 
-### See [Documentation](https://transition-hooks.netlify.app/).
+### See [Documentation](https://transition-hooks.netlify.app/)
 
 Awesome documentation station is under construction!
+
+> [!INFO]
+> Note that `transition-hooks` has no dependencies, and the project is feature complete. We are happy to review pull requests, but we don't plan any further development.
 
 ## Usage
 
