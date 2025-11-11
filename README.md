@@ -7,6 +7,9 @@
 
 Extremely light-weight react transition hooks which is simpler and easier to use than react-transition-group.
 
+> [!NOTE]
+> Note that `transition-hooks` has no dependencies, and the project is feature complete. We are happy to review pull requests, but we don't plan any further development.
+
 ## Features
 
 - State-driven, supports react-dom and react-native
@@ -19,9 +22,6 @@ Extremely light-weight react transition hooks which is simpler and easier to use
 ### See [Documentation](https://transition-hooks.netlify.app/)
 
 Awesome documentation station is under construction!
-
-> [!INFO]
-> Note that `transition-hooks` has no dependencies, and the project is feature complete. We are happy to review pull requests, but we don't plan any further development.
 
 ## Usage
 
