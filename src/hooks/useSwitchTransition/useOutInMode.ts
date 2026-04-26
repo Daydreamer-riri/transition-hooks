@@ -22,7 +22,7 @@ export function useOutInMode<S>({
   const allTimers = useState(() => new Set<Canceller>())[0]
   const nextTickOrNow = from ? nextTick : immediateExecution
 
-  const lastStateRef = useRef<S>()
+  const lastStateRef = useRef<S | undefined>(undefined)
 
   useEffect(() => () => {
     clearAnimationFrameTimeout(startEnterTimerRef.current)
